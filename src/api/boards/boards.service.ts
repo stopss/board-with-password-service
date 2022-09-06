@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BoardInputDto } from './dto/boards.input.dto';
 import { BoardsEntity } from './entities/boards.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class BoardsService {
@@ -15,7 +16,14 @@ export class BoardsService {
     try {
       const { title, content, password } = boardInputDto;
 
-      const board = this.boardsRepository.create({ title, content, password });
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      const board = this.boardsRepository.create({
+        title,
+        content,
+        password: hashedPassword,
+      });
 
       await this.boardsRepository.save(board);
 

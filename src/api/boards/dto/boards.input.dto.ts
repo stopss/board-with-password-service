@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class BoardInputDto {
   @IsNotEmpty()
@@ -13,5 +19,7 @@ export class BoardInputDto {
 
   @IsNotEmpty()
   @IsString()
+  @MinLength(6)
+  @Matches(/(?=.*\d).{6,}/)
   password: string;
 }
