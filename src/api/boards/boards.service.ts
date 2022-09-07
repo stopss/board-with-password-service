@@ -55,14 +55,38 @@ export class BoardsService {
         message: '게시글이 등록되었습니다.',
         timestamp: new Date().toISOString(),
       });
-    } catch (HttpException) {
-      throw new HttpException();
+    } catch (NotFoundException) {
+      throw NotFoundException;
     }
   }
 
   async getBoards() {
-    const list = await this.boardsRepository.find();
-    return list;
+    try {
+      const boardList = await this.boardsRepository.find({
+        order: { updateAt: 'DESC' },
+      });
+
+      if (boardList.length === 0) {
+        throw new NotFoundException(
+          Object.assign({
+            success: false,
+            statusCode: 404,
+            message: '작성된 게시글이 없습니다.',
+            timestamp: new Date().toISOString(),
+          }),
+        );
+      }
+
+      return Object.assign({
+        success: true,
+        statusCode: 200,
+        data: boardList,
+        message: '게시판 전체 목록 조회가 완료되었습니다.',
+        timestamp: new Date().toISOString(),
+      });
+    } catch (NotFoundException) {
+      throw NotFoundException;
+    }
   }
 
   async updateBoard(id: string, boardInputDto: BoardInputDto): Promise<any> {
