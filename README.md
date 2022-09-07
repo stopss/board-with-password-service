@@ -1,5 +1,5 @@
 # 🍀Board With Password Service
-> 비밀번호를 이용한 게시판 서비스  
+> 날씨 API를 포함한 패스워드 설정된 게시판 서비스 
 </br>
 
 ```
