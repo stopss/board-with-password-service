@@ -63,7 +63,39 @@ localhost:3000/api-docs
 
 ## 📝API 명세서
 ![image](https://user-images.githubusercontent.com/33679560/188870735-e21400b1-3ae1-47f7-8897-1161366911b6.png)  
-[postman 바로가기](https://documenter.getpostman.com/view/21326072/VVBTV7hE)
+</br>
+### [postman 바로가기](https://documenter.getpostman.com/view/21326072/VVBTV7hE)  
+</br>
+
+### Response 예)
+* success: true 인 경우
+```
+{
+    "success": true,
+    "statusCode": 200,
+    "data": {
+        "id": "5fe83de0-9047-44a3-800a-11f25b2b32ce",
+        "title": "수정된 게시글입니다.",
+        "content": "오늘 날씨는?🤔",
+        "password": "$2b$10$aY9iX1C2mu8axioYqHuB6O8FAn9saMbcuc2LkDcqN7bikBnyMnfsm",
+        "weather": "화창함",
+        "createdAt": "2022-09-07T14:43:07.254Z",
+        "updateAt": "2022-09-07T14:45:59.000Z",
+        "deleteAt": null
+    },
+    "message": "게시글이 수정되었습니다.",
+    "timestamp": "2022-09-07T14:45:59.116Z"
+}
+```   
+* success: false 인 경우
+```
+{
+    "success": false,
+    "statusCode": 400,
+    "message": "비밀번호가 맞지 않습니다.",
+    "timestamp": "2022-09-07T14:45:37.793Z"
+}
+```   
 </br></br>
 
 ## 📌Convention
@@ -92,8 +124,3 @@ git commit -m "chore: 주석 추가"
 ```  
 </br>
 
-
-
-
-
-   
