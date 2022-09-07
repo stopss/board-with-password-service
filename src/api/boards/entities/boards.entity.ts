@@ -21,6 +21,9 @@ export class BoardsEntity {
   @Column()
   password: string;
 
+  @Column({ nullable: true })
+  weather: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

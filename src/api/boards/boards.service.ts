@@ -4,12 +4,14 @@ import { Repository } from 'typeorm';
 import { BoardInputDto } from './dto/boards.input.dto';
 import { BoardsEntity } from './entities/boards.entity';
 import * as bcrypt from 'bcrypt';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class BoardsService {
   constructor(
     @InjectRepository(BoardsEntity)
     private readonly boardsRepository: Repository<BoardsEntity>,
+    private httpService: HttpService,
   ) {}
 
   async findBoardById(id: string) {
@@ -35,6 +37,12 @@ export class BoardsService {
 
   async createBoard(boardInputDto: BoardInputDto): Promise<any> {
     try {
+      const api_key = process.env.API_KEY;
+      const weatherInfo = await this.httpService
+        .get(
+          `https://api.weatherapi.com/v1/current.json?key=${api_key}&q=Seoul&aqi=no&lang=ko`,
+        )
+        .toPromise();
       const { title, content, password } = boardInputDto;
 
       const salt = await bcrypt.genSalt();
@@ -44,6 +52,7 @@ export class BoardsService {
         title,
         content,
         password: hashedPassword,
+        weather: weatherInfo.data.current.condition.text,
       });
 
       await this.boardsRepository.save(board);
