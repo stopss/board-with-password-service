@@ -1,73 +1,126 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 🍀Board With Password Service
+> 비밀번호를 이용한 게시판 서비스  
+</br>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
 ```
+# 프로젝트 실행
+$ yarn run start:dev
 
-## Running the app
+# Swagger
+localhost:3000/api-docs
+```  
+</br>
 
-```bash
-# development
-$ npm run start
+## 📆개발 기간
+2022.09.06 ~ 2022.09.07  
+</br></br>
 
-# watch mode
-$ npm run start:dev
+## ⚒️기술 스택
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)  
+</br>
+**ORM: TypeORM**  
+</br></br>
 
-# production mode
-$ npm run start:prod
+## ✏️요구사항 및 분석
+### **요구사항**
+#### 1. 사용자는 게시글을 올릴 수 있다. (Issues #1)
+   * 게시글은 제목, 본문, 비밀번호로 구성
+   * 제목은 최대 20자, 본문은 200자로 서버에서 제한
+   * 제목과 본문 모두 이모지가 포함될 수 있음  
+   </br>
+   
+#### 2. 사용자는 게시글을 올릴 때 비밀번호를 설정할 수 있다. (Issues #2)
+   * 회원가입, 로그인 없이 비밀번호만 일치하면 수정, 삭제가 가능
+   * 비밀번호는 DB에 암호화 된 형태로 저장
+   * 비밀번호는 6자 이상, 숫자 1개 이상 반드시 포함  
+   </br>
+   
+#### 3. 모든 사용자는 한 페이지 내에서 모든 게시글을 최신 글 순서로 확인 할 수 있다. (Issues #2)  
+</br>
+
+### **추가 요구사항**
+#### 1. 게시글의 개수가 많을 때, 사용자가 스크롤을 내릴 때마다 오래된 글들이 계속 로드되게 API 수정한다. (Issues #3)
+   * 게시글 중복 불가
+   * 추가 로드는 20개 단위  
+   </br>
+   
+#### 2. 외부 API를 활용하여, 사용자가 게시글을 업로드한 시점의 날씨 정보가 게시글에 포함되도록 수정한다. (Issues #4)
+   * https://www.weatherapi.com 가입 후 Real-time Weather API 사용
+   * 발급 받은 API Key는 .env 파일에 저장
+   * 게시글 작성 시 자동으로 데이터베이스에 추가
+   * 수정은 불가  
+   </br></br>
+   
+## 🧩ERD
+![image](https://user-images.githubusercontent.com/33679560/188898930-6f829c58-b2f6-4c3d-b53c-590c8c822069.png)  
+</br></br>
+
+## 📝API 명세서
+![image](https://user-images.githubusercontent.com/33679560/188870735-e21400b1-3ae1-47f7-8897-1161366911b6.png)  
+</br>
+### [postman 바로가기](https://documenter.getpostman.com/view/21326072/VVBTV7hE)  
+</br>
+
+### Response 예)
+* success: true 인 경우
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+{
+    "success": true,
+    "statusCode": 200,
+    "data": {
+        "id": "5fe83de0-9047-44a3-800a-11f25b2b32ce",
+        "title": "수정된 게시글입니다.",
+        "content": "오늘 날씨는?🤔",
+        "password": "$2b$10$aY9iX1C2mu8axioYqHuB6O8FAn9saMbcuc2LkDcqN7bikBnyMnfsm",
+        "weather": "화창함",
+        "createdAt": "2022-09-07T14:43:07.254Z",
+        "updateAt": "2022-09-07T14:45:59.000Z",
+        "deleteAt": null
+    },
+    "message": "게시글이 수정되었습니다.",
+    "timestamp": "2022-09-07T14:45:59.116Z"
+}
+```   
+* success: false 인 경우
 ```
+{
+    "success": false,
+    "statusCode": 400,
+    "message": "비밀번호가 맞지 않습니다.",
+    "timestamp": "2022-09-07T14:45:37.793Z"
+}
+```   
+</br></br>
 
-## Support
+## 📌Convention
+### Git Branch
+* ``main``, ``develop``, ``feat``로 브랜치를 나눈다.
+* 기능별로 ``feat/user``, ``feat/board`` 등으로 구분 짓는다.
+* 브랜치는 삭제하지 않는다.
+* 개발 과정에서는 ``devleop``브랜치에 merge 한다.
+* ``mian``브랜치는 배포하기 전에 merge 한다.  
+</br>
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Git Commit
+* ``feat`` : 새로운 기능 추가 / 구현중
+* ``fix`` : 이미 있는 코드를 수정 / 버그 수정
+* ``refactor`` : 코드 리팩토링
+* ``docs`` : 문서 수정(README, Swagger)
+* ``test`` : 테스트 코드
+* ``chore`` : 개발에 영향을 가지 않는 부분 수정(패키지 매니저, 주석)  
+</br>
 
-## Stay in touch
+**example)**
+```
+git commit -m "feat: 게시판 Create API 개발 (이슈번호)"
+git commit -m "fix: 게시판 Update 일부 수정 (이슈번호)"
+git commit -m "chore: 주석 추가"
+```  
+</br>
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
