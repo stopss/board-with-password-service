@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Get, Put, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardInputDto } from './dto/boards.input.dto';
 
@@ -22,5 +30,10 @@ export class BoardsController {
     @Body() boardInputDto: BoardInputDto,
   ): Promise<any> {
     return this.boardService.updateBoard(id, boardInputDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string, @Body() body): Promise<any> {
+    return this.boardService.deleteBoard(id, body.password);
   }
 }

@@ -69,7 +69,7 @@ export class BoardsService {
     try {
       const board = await this.findBoardById(id);
 
-      const { password } = boardInputDto;
+      const { title, content, password } = boardInputDto;
 
       const validatePw = await bcrypt.compare(password, board.password);
 
@@ -82,7 +82,9 @@ export class BoardsService {
         });
       }
 
-      await this.boardsRepository.update(id, boardInputDto);
+      const updateData = { title, content };
+
+      await this.boardsRepository.update(id, updateData);
 
       const result = await this.findBoardById(id);
 
@@ -91,6 +93,34 @@ export class BoardsService {
         statusCode: 200,
         data: result,
         message: '게시글이 수정되었습니다.',
+        timestamp: new Date().toISOString(),
+      });
+    } catch (NotFoundException) {
+      throw NotFoundException;
+    }
+  }
+
+  async deleteBoard(id: string, password: string): Promise<any> {
+    try {
+      const board = await this.findBoardById(id);
+
+      const validatePw = await bcrypt.compare(password, board.password);
+
+      if (!validatePw) {
+        return Object.assign({
+          success: false,
+          statusCode: 400,
+          message: '비밀번호가 맞지 않습니다.',
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      await this.boardsRepository.softDelete(id);
+
+      return Object.assign({
+        success: true,
+        statusCode: 200,
+        message: '게시글이 삭제되었습니다.',
         timestamp: new Date().toISOString(),
       });
     } catch (NotFoundException) {
