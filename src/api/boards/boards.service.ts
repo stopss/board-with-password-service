@@ -60,10 +60,15 @@ export class BoardsService {
     }
   }
 
-  async getBoards() {
+  async getBoards(page: number) {
     try {
+      const take = 20;
+      const skip = (page - 1) * take;
+
       const boardList = await this.boardsRepository.find({
         order: { updateAt: 'DESC' },
+        take,
+        skip,
       });
 
       if (boardList.length === 0) {

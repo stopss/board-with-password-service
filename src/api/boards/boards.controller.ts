@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardInputDto } from './dto/boards.input.dto';
@@ -20,8 +21,8 @@ export class BoardsController {
   }
 
   @Get()
-  getAll() {
-    return this.boardService.getBoards();
+  getAll(@Query() { page }) {
+    return this.boardService.getBoards(parseInt(page));
   }
 
   @Put(':id')
