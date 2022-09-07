@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get, Put, Param } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardInputDto } from './dto/boards.input.dto';
 
@@ -14,5 +14,13 @@ export class BoardsController {
   @Get()
   getAll() {
     return this.boardService.getBoards();
+  }
+
+  @Put(':id')
+  update(
+    @Param('id') id: string,
+    @Body() boardInputDto: BoardInputDto,
+  ): Promise<any> {
+    return this.boardService.updateBoard(id, boardInputDto);
   }
 }

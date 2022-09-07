@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BoardInputDto } from './dto/boards.input.dto';
@@ -11,6 +11,27 @@ export class BoardsService {
     @InjectRepository(BoardsEntity)
     private readonly boardsRepository: Repository<BoardsEntity>,
   ) {}
+
+  async findBoardById(id: string) {
+    try {
+      const existBoard = await this.boardsRepository.findOne({ where: { id } });
+
+      if (!existBoard) {
+        throw new NotFoundException(
+          Object.assign({
+            success: false,
+            statusCode: 404,
+            message: 'Not Found Board ID',
+            timestamp: new Date().toISOString(),
+          }),
+        );
+      }
+
+      return existBoard;
+    } catch (NotFoundException) {
+      throw NotFoundException;
+    }
+  }
 
   async createBoard(boardInputDto: BoardInputDto): Promise<any> {
     try {
@@ -42,5 +63,38 @@ export class BoardsService {
   async getBoards() {
     const list = await this.boardsRepository.find();
     return list;
+  }
+
+  async updateBoard(id: string, boardInputDto: BoardInputDto): Promise<any> {
+    try {
+      const board = await this.findBoardById(id);
+
+      const { password } = boardInputDto;
+
+      const validatePw = await bcrypt.compare(password, board.password);
+
+      if (!validatePw) {
+        return Object.assign({
+          success: false,
+          statusCode: 400,
+          message: '비밀번호가 맞지 않습니다.',
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      await this.boardsRepository.update(id, boardInputDto);
+
+      const result = await this.findBoardById(id);
+
+      return Object.assign({
+        success: true,
+        statusCode: 200,
+        data: result,
+        message: '게시글이 수정되었습니다.',
+        timestamp: new Date().toISOString(),
+      });
+    } catch (NotFoundException) {
+      throw NotFoundException;
+    }
   }
 }
