@@ -21,7 +21,7 @@ export class BoardsController {
   }
 
   @Get()
-  getAll(@Query() { page }) {
+  getAll(@Query() { page }): Promise<any> {
     return this.boardService.getBoards(parseInt(page));
   }
 
